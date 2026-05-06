@@ -1,1 +1,121 @@
 
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Benim Anılarım | QR Sayfası</title>
+    <style>
+        /* CSS - Tasarım Kısmı */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0f0f0f; /* Karanlık tema */
+            color: white;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #00d4ff;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+            margin-bottom: 10px;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            width: 100%;
+            max-width: 1000px;
+            margin-top: 20px;
+        }
+
+        .memory-card {
+            background: #1a1a1a;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid #333;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .memory-card:hover {
+            transform: scale(1.03);
+            border-color: #00d4ff;
+        }
+
+        .memory-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .memory-card-info {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .footer {
+            margin-top: 50px;
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        /* JavaScript ile çalışan efekt için ufak bir dokunuş */
+        .highlight {
+            color: #ff007b;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Anı Koleksiyonum</h1>
+    <p>QR kodu okutup buraya geldiğin için teşekkürler. İşte <span class="highlight" id="random-word">bazı anılar</span>...</p>
+
+    <div class="gallery">
+        <div class="memory-card">
+            <img src="https://via.placeholder.com/400x300?text=Fotoğraf+Buraya" alt="Anı 1">
+            <div class="memory-card-info">
+                <h3>Oyun Gecesi</h3>
+                <p>Arkadaşlarla ilk büyük turnuvamızdan.</p>
+            </div>
+        </div>
+
+        <div class="memory-card">
+            <img src="https://via.placeholder.com/400x300?text=Video+Gelecek" alt="Anı 2">
+            <div class="memory-card-info">
+                <h3>Tatil Rotası</h3>
+                <p>Gördüğüm en güzel manzara.</p>
+            </div>
+        </div>
+
+        <div class="memory-card">
+            <img src="https://via.placeholder.com/400x300?text=PC+Setup" alt="Anı 3">
+            <div class="memory-card-info">
+                <h3>Sistem Topladığım Gün</h3>
+                <p>İlk kez kendi PC'mi kurarken.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        © 2026 - GitHub Pages ile oluşturuldu
+    </div>
+
+    <script>
+        // JavaScript - Etkileşim Kısmı
+        const words = ["en özel anılar", "unutulmaz kareler", "biriktirdiğim hikayeler"];
+        let i = 0;
+        
+        // Üstteki vurgulu kelimeyi her 3 saniyede bir değiştirir
+        setInterval(() => {
+            document.getElementById('random-word').innerText = words[i];
+            i = (i + 1) % words.length;
+        }, 3000);
+    </script>
+</body>
+</html>
