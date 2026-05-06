@@ -174,101 +174,6 @@
         .card-5 { grid-area: corner5; animation-delay: 1.4s; }
         .card-6 { grid-area: corner6; animation-delay: 1.7s; }
 
-        /* 🔥 HER KÖŞEDE FULL KALP ÇEMBERİ 🔥 */
-        .heart-circle {
-            position: absolute;
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-content: center;
-            gap: 2px;
-            z-index: 4;
-            padding: 4px;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 120, 120, 0.3);
-            box-shadow: 
-                0 4px 15px rgba(255, 100, 100, 0.4),
-                inset 0 1px 0 rgba(255, 255, 255, 0.2);
-            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-
-        /* Her köşenin pozisyonu */
-        .heart-circle.tl { top: 8px; left: 8px; animation: heartCircleFloatTL 4s ease-in-out infinite; }
-        .heart-circle.tr { top: 8px; right: 8px; animation: heartCircleFloatTR 4s ease-in-out infinite 0.2s; }
-        .heart-circle.bl { bottom: 8px; left: 8px; animation: heartCircleFloatBL 4s ease-in-out infinite 0.4s; }
-        .heart-circle.br { bottom: 8px; right: 8px; animation: heartCircleFloatBR 4s ease-in-out infinite 0.6s; }
-
-        /* Küçük kalpler çemberi içinde */
-        .heart-circle span {
-            font-size: 14px;
-            line-height: 1;
-            transition: all 0.3s ease;
-            filter: drop-shadow(0 2px 4px rgba(255, 80, 80, 0.6));
-        }
-
-        /* Kalp pozisyonları çemberde */
-        .heart-circle span:nth-child(1) { transform: rotate(-45deg) translateX(18px); }
-        .heart-circle span:nth-child(2) { transform: rotate(0deg) translateY(-22px); }
-        .heart-circle span:nth-child(3) { transform: rotate(45deg) translateX(18px); }
-        .heart-circle span:nth-child(4) { transform: rotate(90deg) translateX(22px); }
-        .heart-circle span:nth-child(5) { transform: rotate(135deg) translateX(18px); }
-        .heart-circle span:nth-child(6) { transform: rotate(180deg) translateY(22px); }
-        .heart-circle span:nth-child(7) { transform: rotate(225deg) translateX(18px); }
-        .heart-circle span:nth-child(8) { transform: rotate(270deg) translateX(-22px); }
-
-        /* Hover efektleri */
-        .memory-card:hover .heart-circle {
-            transform: scale(1.3);
-            box-shadow: 
-                0 8px 25px rgba(255, 80, 80, 0.8),
-                inset 0 1px 0 rgba(255, 255, 255, 0.3);
-            background: rgba(255, 120, 120, 0.2);
-            border-color: rgba(255, 80, 80, 0.6);
-        }
-
-        .memory-card:hover .heart-circle.tl { transform: scale(1.3) rotate(360deg); }
-        .memory-card:hover .heart-circle.tr { transform: scale(1.3) rotate(-360deg); }
-        .memory-card:hover .heart-circle.bl { transform: scale(1.3) rotate(180deg); }
-        .memory-card:hover .heart-circle.br { transform: scale(1.3) rotate(-180deg); }
-
-        .memory-card:hover .heart-circle span {
-            font-size: 16px;
-            filter: drop-shadow(0 3px 8px rgba(255, 60, 60, 0.9));
-        }
-
-        /* Animasyonlar her köşe için farklı */
-        @keyframes heartCircleFloatTL {
-            0%, 100% { transform: scale(1) rotate(0deg); }
-            25% { transform: scale(1.02) rotate(90deg); }
-            50% { transform: scale(1.01) rotate(180deg); }
-            75% { transform: scale(1.03) rotate(270deg); }
-        }
-
-        @keyframes heartCircleFloatTR {
-            0%, 100% { transform: scale(1) rotate(0deg); }
-            25% { transform: scale(1.03) rotate(-90deg); }
-            50% { transform: scale(1.02) rotate(-180deg); }
-            75% { transform: scale(1.01) rotate(-270deg); }
-        }
-
-        @keyframes heartCircleFloatBL {
-            0%, 100% { transform: scale(1) rotate(180deg); }
-            25% { transform: scale(1.02) rotate(270deg); }
-            50% { transform: scale(1.01) rotate(0deg); }
-            75% { transform: scale(1.03) rotate(90deg); }
-        }
-
-        @keyframes heartCircleFloatBR {
-            0%, 100% { transform: scale(1) rotate(180deg); }
-            25% { transform: scale(1.03) rotate(90deg); }
-            50% { transform: scale(1.02) rotate(0deg); }
-            75% { transform: scale(1.01) rotate(-90deg); }
-        }
-
         @keyframes bounce {
             0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
             40% { transform: translateY(-15px); }
@@ -313,8 +218,15 @@
     </footer>
 
     <script>
-
-        
+        // Örnek fotoğraflar (gerçek projede buraya kendi fotoğraflarınızı ekleyin)
+        const memories = [
+            { src: 'https://images.unsplash.com/photo-1517457373958-b7bdd4587208?w=800&h=600&fit=crop', alt: 'Anı 1' },
+            { src: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop', alt: 'Anı 2' },
+            { src: 'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b7?w=800&h=600&fit=crop', alt: 'Anı 3' },
+            { src: 'https://images.unsplash.com/photo-1524504388940-7b8a6c5e7e40?w=800&h=600&fit=crop', alt: 'Anı 4' },
+            { src: 'https://images.unsplash.com/photo-1464822759023-fed622b4e443?w=800&h=600&fit=crop', alt: 'Anı 5' },
+            { src: 'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=800&h=600&fit=crop', alt: 'Anı 6' }
+        ];
 
         function createGallery() {
             const gallery = document.getElementById('gallery');
@@ -325,28 +237,6 @@
                 
                 card.innerHTML = `
                     <img src="${memory.src}" alt="${memory.alt}" loading="lazy">
-                    
-                    <!-- 🔥 HER KÖŞEDE AYNI KALP ÇEMBERİ! 🔥 -->
-                    <div class="heart-circle tl">
-                        <span>💕</span><span>💕</span><span>💕</span>
-                        <span>💕</span><span>💕</span><span>💕</span>
-                        <span>💕</span><span>💕</span>
-                    </div>
-                    <div class="heart-circle tr">
-                        <span>💕</span><span>💕</span><span>💕</span>
-                        <span>💕</span><span>💕</span><span>💕</span>
-                        <span>💕</span><span>💕</span>
-                    </div>
-                    <div class="heart-circle bl">
-                        <span>💕</span><span>💕</span><span>💕</span>
-                        <span>💕</span><span>💕</span><span>💕</span>
-                        <span>💕</span><span>💕</span>
-                    </div>
-                    <div class="heart-circle br">
-                        <span>💕</span><span>💕</span><span>💕</span>
-                        <span>💕</span><span>💕</span><span>💕</span>
-                        <span>💕</span><span>💕</span>
-                    </div>
                 `;
                 
                 gallery.appendChild(card);
