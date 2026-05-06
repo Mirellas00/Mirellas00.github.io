@@ -1,121 +1,392 @@
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Benim Anılarım | QR Sayfası</title>
+    <title>Anılarımız Kalır</title>
     <style>
-        /* CSS - Tasarım Kısmı */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #0f0f0f; /* Karanlık tema */
-            color: white;
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@300;400;500;600&family=Playfair+Display:wght@300;400;500&display=swap');
+        
+        * {
             margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        h1 {
-            color: #00d4ff;
-            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
-            margin-bottom: 10px;
+        body {
+            font-family: 'Playfair Display', serif;
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, #16213e 40%, #0f0f23 100%);
+            color: #f8f8ff;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.1) 0%, transparent 50%);
+            z-index: -1;
+            animation: bgShift 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes bgShift {
+            0% { transform: scale(1) rotate(0deg); }
+            100% { transform: scale(1.1) rotate(1deg); }
+        }
+
+        .hero-section {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(135deg, rgba(26,26,46,0.9) 0%, rgba(22,33,62,0.95) 100%);
+        }
+
+        .main-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(5rem, 14vw, 16rem);
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            line-height: 1;
+            background: linear-gradient(135deg, #f8f8ff 0%, #e0e0ff 50%, #c0c0ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 60px rgba(248, 248, 255, 0.5);
+            opacity: 0;
+            transform: translateY(80px) scale(0.8);
+            animation: titleReveal 3s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.5s forwards;
+            position: relative;
+            z-index: 2;
+        }
+
+        .main-title::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #f8f8ff, transparent);
+            opacity: 0;
+            animation: lineDraw 1s ease-out 2s forwards;
+        }
+
+        @keyframes titleReveal {
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes lineDraw {
+            to { opacity: 1; width: 300px; }
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            font-size: 2rem;
+            font-family: 'Cinzel', serif;
+            animation: bounce 2.5s infinite;
+            color: rgba(248, 248, 255, 0.6);
+            text-shadow: 0 0 20px rgba(248, 248, 255, 0.3);
+        }
+
+        .gallery-section {
+            padding: 150px 30px 100px;
+            max-width: 1600px;
+            margin: 0 auto;
+            position: relative;
         }
 
         .gallery {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-            width: 100%;
-            max-width: 1000px;
-            margin-top: 20px;
+            grid-template-areas: 
+                "corner1 corner2 corner2"
+                "corner4 center center"
+                "corner4 corner5 corner6";
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: 450px 350px 350px;
+            gap: 35px;
+            height: 1200px;
+            position: relative;
         }
 
         .memory-card {
-            background: #1a1a1a;
-            border-radius: 15px;
+            position: relative;
+            border-radius: 30px;
             overflow: hidden;
-            border: 1px solid #333;
-            transition: transform 0.3s ease, border-color 0.3s ease;
             cursor: pointer;
+            opacity: 0;
+            transform: translateY(120px) rotateX(15deg);
+            transition: all 1s cubic-bezier(0.23, 1, 0.32, 1);
+            box-shadow: 
+                0 35px 70px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
         }
 
         .memory-card:hover {
-            transform: scale(1.03);
-            border-color: #00d4ff;
+            transform: translateY(-35px) rotateX(0deg) scale(1.05);
+            box-shadow: 
+                0 60px 120px rgba(0, 0, 0, 0.7),
+                0 0 0 1px rgba(255, 255, 255, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
         }
 
         .memory-card img {
             width: 100%;
-            height: 200px;
+            height: 100%;
             object-fit: cover;
+            transition: all 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            filter: grayscale(20%) brightness(0.9);
         }
 
-        .memory-card-info {
-            padding: 15px;
-            text-align: center;
+        .memory-card:hover img {
+            transform: scale(1.2) rotate(2deg);
+            filter: grayscale(0%) brightness(1.1) contrast(1.1);
+        }
+
+        /* Köşeler BÜYÜK */
+        .corner-card {
+            height: 100%;
+        }
+
+        /* Grid pozisyonları */
+        .card-1 { grid-area: corner1; animation-delay: 0.3s; }
+        .card-2 { grid-area: corner2; animation-delay: 0.5s; }
+        .card-3 { grid-area: center; height: 100%; animation-delay: 0.8s; }
+        .card-4 { grid-area: corner4; animation-delay: 1.1s; }
+        .card-5 { grid-area: corner5; animation-delay: 1.4s; }
+        .card-6 { grid-area: corner6; animation-delay: 1.7s; }
+
+        /* 🔥 HER KÖŞEDE FULL KALP ÇEMBERİ 🔥 */
+        .heart-circle {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-content: center;
+            gap: 2px;
+            z-index: 4;
+            padding: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 120, 120, 0.3);
+            box-shadow: 
+                0 4px 15px rgba(255, 100, 100, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        /* Her köşenin pozisyonu */
+        .heart-circle.tl { top: 8px; left: 8px; animation: heartCircleFloatTL 4s ease-in-out infinite; }
+        .heart-circle.tr { top: 8px; right: 8px; animation: heartCircleFloatTR 4s ease-in-out infinite 0.2s; }
+        .heart-circle.bl { bottom: 8px; left: 8px; animation: heartCircleFloatBL 4s ease-in-out infinite 0.4s; }
+        .heart-circle.br { bottom: 8px; right: 8px; animation: heartCircleFloatBR 4s ease-in-out infinite 0.6s; }
+
+        /* Küçük kalpler çemberi içinde */
+        .heart-circle span {
+            font-size: 14px;
+            line-height: 1;
+            transition: all 0.3s ease;
+            filter: drop-shadow(0 2px 4px rgba(255, 80, 80, 0.6));
+        }
+
+        /* Kalp pozisyonları çemberde */
+        .heart-circle span:nth-child(1) { transform: rotate(-45deg) translateX(18px); }
+        .heart-circle span:nth-child(2) { transform: rotate(0deg) translateY(-22px); }
+        .heart-circle span:nth-child(3) { transform: rotate(45deg) translateX(18px); }
+        .heart-circle span:nth-child(4) { transform: rotate(90deg) translateX(22px); }
+        .heart-circle span:nth-child(5) { transform: rotate(135deg) translateX(18px); }
+        .heart-circle span:nth-child(6) { transform: rotate(180deg) translateY(22px); }
+        .heart-circle span:nth-child(7) { transform: rotate(225deg) translateX(18px); }
+        .heart-circle span:nth-child(8) { transform: rotate(270deg) translateX(-22px); }
+
+        /* Hover efektleri */
+        .memory-card:hover .heart-circle {
+            transform: scale(1.3);
+            box-shadow: 
+                0 8px 25px rgba(255, 80, 80, 0.8),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            background: rgba(255, 120, 120, 0.2);
+            border-color: rgba(255, 80, 80, 0.6);
+        }
+
+        .memory-card:hover .heart-circle.tl { transform: scale(1.3) rotate(360deg); }
+        .memory-card:hover .heart-circle.tr { transform: scale(1.3) rotate(-360deg); }
+        .memory-card:hover .heart-circle.bl { transform: scale(1.3) rotate(180deg); }
+        .memory-card:hover .heart-circle.br { transform: scale(1.3) rotate(-180deg); }
+
+        .memory-card:hover .heart-circle span {
+            font-size: 16px;
+            filter: drop-shadow(0 3px 8px rgba(255, 60, 60, 0.9));
+        }
+
+        /* Animasyonlar her köşe için farklı */
+        @keyframes heartCircleFloatTL {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.02) rotate(90deg); }
+            50% { transform: scale(1.01) rotate(180deg); }
+            75% { transform: scale(1.03) rotate(270deg); }
+        }
+
+        @keyframes heartCircleFloatTR {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.03) rotate(-90deg); }
+            50% { transform: scale(1.02) rotate(-180deg); }
+            75% { transform: scale(1.01) rotate(-270deg); }
+        }
+
+        @keyframes heartCircleFloatBL {
+            0%, 100% { transform: scale(1) rotate(180deg); }
+            25% { transform: scale(1.02) rotate(270deg); }
+            50% { transform: scale(1.01) rotate(0deg); }
+            75% { transform: scale(1.03) rotate(90deg); }
+        }
+
+        @keyframes heartCircleFloatBR {
+            0%, 100% { transform: scale(1) rotate(180deg); }
+            25% { transform: scale(1.03) rotate(90deg); }
+            50% { transform: scale(1.02) rotate(0deg); }
+            75% { transform: scale(1.01) rotate(-90deg); }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-15px); }
+            60% { transform: translateY(-8px); }
+        }
+
+        @keyframes slideInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0) rotateX(0deg) scale(1);
+            }
         }
 
         .footer {
-            margin-top: 50px;
-            font-size: 0.8rem;
-            color: #666;
-        }
-
-        /* JavaScript ile çalışan efekt için ufak bir dokunuş */
-        .highlight {
-            color: #ff007b;
-            font-weight: bold;
+            text-align: center;
+            padding: 100px 40px 60px;
+            color: rgba(248, 248, 255, 0.7);
+            font-size: 1.3rem;
+            font-family: 'Playfair Display', serif;
+            max-width: 900px;
+            margin: 0 auto;
+            backdrop-filter: blur(10px);
+            background: rgba(26, 26, 46, 0.4);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         }
     </style>
 </head>
 <body>
+    <section class="hero-section">
+        <h1 class="main-title">Onlar gitti<br>anılarımız kaldı</h1>
+        <div class="scroll-indicator">↓</div>
+    </section>
 
-    <h1>Anı Koleksiyonum</h1>
-    <p>QR kodu okutup buraya geldiğin için teşekkürler. İşte <span class="highlight" id="random-word">bazı anılar</span>...</p>
+    <section class="gallery-section">
+        <div class="gallery" id="gallery"></div>
+    </section>
 
-    <div class="gallery">
-        <div class="memory-card">
-            <img src="https://via.placeholder.com/400x300?text=Fotoğraf+Buraya" alt="Anı 1">
-            <div class="memory-card-info">
-                <h3>Oyun Gecesi</h3>
-                <p>Arkadaşlarla ilk büyük turnuvamızdan.</p>
-            </div>
-        </div>
-
-        <div class="memory-card">
-            <img src="https://via.placeholder.com/400x300?text=Video+Gelecek" alt="Anı 2">
-            <div class="memory-card-info">
-                <h3>Tatil Rotası</h3>
-                <p>Gördüğüm en güzel manzara.</p>
-            </div>
-        </div>
-
-        <div class="memory-card">
-            <img src="https://via.placeholder.com/400x300?text=PC+Setup" alt="Anı 3">
-            <div class="memory-card-info">
-                <h3>Sistem Topladığım Gün</h3>
-                <p>İlk kez kendi PC'mi kurarken.</p>
-            </div>
-        </div>
-    </div>
-
-    <div class="footer">
-        © 2026 - GitHub Pages ile oluşturuldu
-    </div>
+    <footer class="footer">
+        <p>Sevdiklerimizle geçirdiğimiz her an, kalbimizde sonsuza dek yaşayacak... 💕</p>
+    </footer>
 
     <script>
-        // JavaScript - Etkileşim Kısmı
-        const words = ["en özel anılar", "unutulmaz kareler", "biriktirdiğim hikayeler"];
-        let i = 0;
-        
-        // Üstteki vurgulu kelimeyi her 3 saniyede bir değiştirir
-        setInterval(() => {
-            document.getElementById('random-word').innerText = words[i];
-            i = (i + 1) % words.length;
-        }, 3000);
+        const memories = [
+            { src: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=800&h=600&fit=crop', alt: 'Anılar 1' },
+            { src: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop', alt: 'Anılar 2' },
+            { src: 'https://images.unsplash.com/photo-1524504388940-7b8a6c5e7d16?w=800&h=600&fit=crop', alt: 'Anılar 3' },
+            { src: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&h=600&fit=crop', alt: 'Anılar 4' },
+            { src: 'https://images.unsplash.com/photo-1469362102473-8622cfb973cd?w=800&h=600&fit=crop', alt: 'Anılar 5' },
+            { src: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=800&h=600&fit=crop', alt: 'Anılar 6' }
+        ];
+
+        function createGallery() {
+            const gallery = document.getElementById('gallery');
+            
+            memories.forEach((memory, index) => {
+                const card = document.createElement('div');
+                card.className = `memory-card card-${index + 1} ${index < 4 ? 'corner-card' : ''}`;
+                
+                card.innerHTML = `
+                    <img src="${memory.src}" alt="${memory.alt}" loading="lazy">
+                    
+                    <!-- 🔥 HER KÖŞEDE AYNI KALP ÇEMBERİ! 🔥 -->
+                    <div class="heart-circle tl">
+                        <span>💕</span><span>💕</span><span>💕</span>
+                        <span>💕</span><span>💕</span><span>💕</span>
+                        <span>💕</span><span>💕</span>
+                    </div>
+                    <div class="heart-circle tr">
+                        <span>💕</span><span>💕</span><span>💕</span>
+                        <span>💕</span><span>💕</span><span>💕</span>
+                        <span>💕</span><span>💕</span>
+                    </div>
+                    <div class="heart-circle bl">
+                        <span>💕</span><span>💕</span><span>💕</span>
+                        <span>💕</span><span>💕</span><span>💕</span>
+                        <span>💕</span><span>💕</span>
+                    </div>
+                    <div class="heart-circle br">
+                        <span>💕</span><span>💕</span><span>💕</span>
+                        <span>💕</span><span>💕</span><span>💕</span>
+                        <span>💕</span><span>💕</span>
+                    </div>
+                `;
+                
+                gallery.appendChild(card);
+            });
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0) rotateX(0deg) scale(1)';
+                }
+            });
+        }, { threshold: 0.15 });
+
+        window.addEventListener('load', () => {
+            createGallery();
+            setTimeout(() => {
+                document.querySelectorAll('.memory-card').forEach(card => {
+                    observer.observe(card);
+                });
+            }, 200);
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.memory-card').forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-35px) rotateX(0deg) scale(1.05)';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) rotateX(0deg) scale(1)';
+                });
+            });
+        });
     </script>
 </body>
 </html>
